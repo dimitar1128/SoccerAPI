@@ -1,0 +1,1 @@
+TOKEN_LIFE_TIME = 3600 * 24 * 10

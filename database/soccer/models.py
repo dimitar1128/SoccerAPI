@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -33,3 +34,15 @@ class TBLTeam(models.Model):
     class Meta:
         db_table = 'tbl_team'
 
+
+class TBLToken(models.Model):
+    token = models.TextField()
+    user_id = models.IntegerField()
+    created_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'tbl_token'
+
+    def save(self, *args, **kwargs):
+        self.created_time = datetime.datetime.now(datetime.timezone.utc)
+        super().save(*args, **kwargs)
