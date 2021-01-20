@@ -18,7 +18,7 @@ class Login(viewsets.ViewSet):
 
         Returns:
             - when success
-                Dictionary with token and expires_at time.
+                Dictionary with token and expires_at time. (HttpStatusCode = 200)
             - when fail
                 Dictionary with code and message. Possible values are as following.
                     - RES_ERR_MISSING_FIELD         (HttpStatusCode = 400)

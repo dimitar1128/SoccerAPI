@@ -18,8 +18,10 @@ from django.conf.urls import include
 from rbasis.urlrouter import router
 
 from api.v1.auth import urls as AuthApi
+from api.v1.team import urls as TeamApi
 
 AuthApi.RegPath()
+TeamApi.RegPath()
 
 urlpatterns = [
     path('', include(router.urls()))

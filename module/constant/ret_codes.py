@@ -17,8 +17,24 @@ RES_ERR_INVALID_CREDENTIAL = {
     'code': 8003,
     'message': 'Email or password is not correct'
 }
+RES_ERR_TOKEN_REQUIRED = {
+    'code': 8004,
+    'message': 'Token is required to call api'
+}
+RES_ERR_INVALID_TOKEN = {
+    'code': 8005,
+    'message': 'Token is invalid. Please try to login again to get a new valid token.'
+}
+
+
+
 
 RES_ERR_INTERNAL_SERVER = {
     'code': 9001,
     'message': 'Internal server error'
+}
+
+RES_ERR_TEAM_CREATE = {
+    'code': 9002,
+    'message': 'Server error during team creation'
 }

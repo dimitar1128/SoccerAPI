@@ -1,4 +1,5 @@
 from .base import *
+from module.team import *
 
 class Signup(viewsets.ViewSet):
 
@@ -18,6 +19,7 @@ class Signup(viewsets.ViewSet):
                 - RES_OK_USER_CREATED       (HttpStatusCode = 201)
                 - RES_ERR_USER_EXIST        (HttpStatusCode = 409)
                 - RES_ERR_MISSING_FIELD     (HttpStatusCode = 400)
+                - RES_ERR_TEAM_CREATE       (HttpStatusCode = 500)
                 - RES_ERR_INTERNAL_SERVER   (HttpStatusCode = 500)
         """
         try:
@@ -37,6 +39,12 @@ class Signup(viewsets.ViewSet):
             user.email = payload['email']
             user.set_password(payload['password'])
             user.save()
+
+            ret = create_team(user.id)
+            # if team create is failed, remove registered user
+            if not ret:
+                user.delete()
+                return Response(RES_ERR_TEAM_CREATE, 500)
 
             return Response(RES_OK_USER_CREATED, 201)
 

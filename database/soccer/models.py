@@ -29,7 +29,7 @@ class TBLTeam(models.Model):
     name = models.CharField(max_length=100)
     country = models.CharField(max_length=50)
     extra_value = models.FloatField(default=5000000)
-    members = models.ManyToManyField(TBLMember)
+    members = models.ManyToManyField(TBLMember, default=None, null=None)
 
     class Meta:
         db_table = 'tbl_team'
