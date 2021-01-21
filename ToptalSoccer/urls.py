@@ -19,9 +19,11 @@ from rbasis.urlrouter import router
 
 from api.v1.auth import urls as AuthApi
 from api.v1.team import urls as TeamApi
+from api.v1.market import urls as MarketApi
 
 AuthApi.RegPath()
 TeamApi.RegPath()
+MarketApi.RegPath()
 
 urlpatterns = [
     path('', include(router.urls()))

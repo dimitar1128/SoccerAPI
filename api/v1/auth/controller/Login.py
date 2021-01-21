@@ -13,8 +13,8 @@ class Login(viewsets.ViewSet):
         Method
             POST
         Payload
-            email
-            password
+            email (*)
+            password (*)
 
         Returns:
             - when success
@@ -32,14 +32,14 @@ class Login(viewsets.ViewSet):
                 'password'
             ]
             if not check_arguments(exp_args, payload):
-                return Response(RES_ERR_MISSING_FIELD, 400)
+                return Response(RES_ERR_MISSING_FIELD, status=400)
 
             user = authenticate(
                 username=payload['email'],
                 password=payload['password'],
             )
             if not user:
-                return Response(RES_ERR_INVALID_CREDENTIAL, 400)
+                return Response(RES_ERR_INVALID_CREDENTIAL, status=400)
 
             token = generate_token()
             # regenerate token if it is already registered
@@ -61,4 +61,4 @@ class Login(viewsets.ViewSet):
 
         except Exception as e:
             logging.error(str(e))
-            return Response(RES_ERR_INTERNAL_SERVER, 500)
+            return Response(RES_ERR_INTERNAL_SERVER, status=500)

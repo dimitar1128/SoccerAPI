@@ -7,6 +7,20 @@ class TBLUser(AbstractUser):
     class Meta:
         db_table = 'tbl_user'
 
+
+class TBLToken(models.Model):
+    token = models.TextField()
+    user_id = models.IntegerField()
+    created_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'tbl_token'
+
+    def save(self, *args, **kwargs):
+        self.created_time = datetime.datetime.now(datetime.timezone.utc)
+        super().save(*args, **kwargs)
+
+
 class TBLMember(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -19,6 +33,7 @@ class TBLMember(models.Model):
         (3, 'Attacker'),
     ])
     value = models.FloatField(default=1000000)
+    team_id = models.IntegerField()
 
     class Meta:
         db_table = 'tbl_member'
@@ -35,14 +50,11 @@ class TBLTeam(models.Model):
         db_table = 'tbl_team'
 
 
-class TBLToken(models.Model):
-    token = models.TextField()
-    user_id = models.IntegerField()
-    created_time = models.DateTimeField()
+class TBLMarket(models.Model):
+    member = models.ForeignKey(TBLMember, on_delete=models.CASCADE)
+    price = models.FloatField()
 
     class Meta:
-        db_table = 'tbl_token'
+        db_table = 'tbl_market'
 
-    def save(self, *args, **kwargs):
-        self.created_time = datetime.datetime.now(datetime.timezone.utc)
-        super().save(*args, **kwargs)
+

@@ -84,6 +84,7 @@ def create_member(type, team_obj):
         member.last_name = names.get_last_name()
         member.country = countries[country_idx]['name']
         member.age = random.randint(18, 40)
+        member.team_id = team_obj.id
         member.save()
 
         team_obj.members.add(member)
@@ -115,6 +116,7 @@ def get_team_by_id(id):
             'name': team.name,
             'country': team.country,
             'extra_value': team.extra_value,
+            'total_value': 0,
             'members': []
         }
         for member in list(team.members.all().values()):
@@ -127,6 +129,7 @@ def get_team_by_id(id):
             elif member['type'] == 3:
                 member['type'] = 'Attacker'
 
+            team_dict['total_value'] += member['value']
             team_dict['members'].append(member)
 
         return team_dict
