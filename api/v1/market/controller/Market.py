@@ -27,10 +27,45 @@ class Market(viewsets.ViewSet):
         - when fail
             - RES_ERR_TOKEN_REQUIRED                (HttpStatusCode = 401)
             - RES_ERR_INVALID_TOKEN                 (HttpStatusCode = 401)
+            - RES_ERR_INVALID_FILED                 (HttpStatusCode = 400)
             - RES_ERR_INTERNAL_SERVER               (HttpStatusCode = 500)
         """
         try:
+            # payload check
             payload = request.POST
+            exp_args = [
+                {
+                    'field': 'filter_country',
+                    'required': False,
+                    'type': 'string',
+                },
+                {
+                    'field': 'filter_team_name',
+                    'required': False,
+                    'type': 'string',
+                },
+                {
+                    'field': 'filter_player_name',
+                    'required': False,
+                    'type': 'string',
+                },
+                {
+                    'field': 'filter_value_lte',
+                    'required': False,
+                    'type': 'float',
+                },
+                {
+                    'field': 'filter_value_gte',
+                    'required': False,
+                    'type': 'float',
+                },
+            ]
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
+                return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
+
             filter_country = payload.get('filter_country')
             filter_team_name = payload.get('filter_team_name')
             filter_player_name = payload.get('filter_player_name')
@@ -74,7 +109,6 @@ class Market(viewsets.ViewSet):
                     'last_name': member.last_name,
                     'country': member.country,
                     'team_name': team_dict[member.team_id]['name'],
-                    'value': member.value,
                     'price': market.price,
                 })
 
@@ -107,25 +141,33 @@ class Market(viewsets.ViewSet):
                     - RES_ERR_INVALID_TOKEN         (HttpStatusCode = 401)
                     - RES_ERR_INVALID_PERMISSION    (HttpStatusCode = 401)
                     - RES_ERR_MISSING_FIELD         (HttpStatusCode = 400)
+                    - RES_ERR_INVALID_FILED         (HttpStatusCode = 400)
                     - RES_ERR_ALREADY_ON_MARKET     (HttpStatusCode = 400)
-                    - RES_ERR_INVALID_PRICE         (HttpStatusCode = 400)
                     - RES_ERR_INTERNAL_SERVER       (HttpStatusCode = 500)
         """
         try:
-            # parameter check
+            # payload check
             payload = self.request.POST
             exp_args = [
-                'member_id',
-                'price',
+                {
+                    'field': 'member_id',
+                    'required': True,
+                    'type': 'integer',
+                },
+                {
+                    'field': 'price',
+                    'required': True,
+                    'type': 'float',
+                },
             ]
-            if not check_arguments(exp_args, payload):
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
                 return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
 
             member_id = int(payload['member_id'])
             price = float(payload['price'])
-
-            if price <= 0:
-                return Response(RES_ERR_INVALID_PRICE, status=400)
 
             user = get_user_with_token(
                 payload['token']
@@ -143,6 +185,7 @@ class Market(viewsets.ViewSet):
             if len(TBLMarket.objects.filter(member_id=member_id)) > 0:
                 return Response(RES_ERR_ALREADY_ON_MARKET, status=400)
 
+            # set user on the transfer list
             obj = TBLMarket()
             obj.member_id = member_id
             obj.price = price
@@ -175,23 +218,35 @@ class Market(viewsets.ViewSet):
                     - RES_ERR_TOKEN_REQUIRED                (HttpStatusCode = 401)
                     - RES_ERR_INVALID_TOKEN                 (HttpStatusCode = 401)
                     - RES_ERR_MISSING_FIELD                 (HttpStatusCode = 400)
+                    - RES_ERR_INVALID_FILED                 (HttpStatusCode = 400)
                     - RES_ERR_MEMBER_NOT_ON_MARKET          (HttpStatusCode = 400)
                     - RES_ERR_NOT_ALLOW_TO_BUY_OWN_PLAYER   (HttpStatusCode = 400)
                     - RES_ERR_NOT_ENOUGH_MONEY_TO_BUY       (HttpStatusCode = 400)
                     - RES_ERR_INTERNAL_SERVER               (HttpStatusCode = 500)
         """
         try:
-            # parameter check
-            payload = request.POST
-            member_id = payload.get('member_id')
-            if not member_id:
+            # payload check
+            payload = self.request.POST
+            exp_args = [
+                {
+                    'field': 'member_id',
+                    'required': True,
+                    'type': 'integer',
+                },
+            ]
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
                 return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
 
             user = get_user_with_token(
                 payload['token']
             )
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
+
+            member_id = int(payload.get('member_id'))
 
             # if the member is not on the transfer list
             if len(TBLMarket.objects.filter(member_id=member_id)) == 0:

@@ -7,7 +7,7 @@ class Signup(viewsets.ViewSet):
         """Sign up user
 
         Url
-            /auth/signup/
+            /signup/
         Method
             POST
         Payload
@@ -19,17 +19,30 @@ class Signup(viewsets.ViewSet):
                 - RES_OK_USER_CREATED       (HttpStatusCode = 201)
                 - RES_ERR_USER_EXIST        (HttpStatusCode = 409)
                 - RES_ERR_MISSING_FIELD     (HttpStatusCode = 400)
+                - RES_ERR_INVALID_FILED         (HttpStatusCode = 400)
                 - RES_ERR_TEAM_CREATE       (HttpStatusCode = 500)
                 - RES_ERR_INTERNAL_SERVER   (HttpStatusCode = 500)
         """
         try:
+            # payload check
+            payload = self.request.POST
             exp_args = [
-                'email',
-                'password'
+                {
+                    'field': 'email',
+                    'required': True,
+                    'type': 'string',
+                },
+                {
+                    'field': 'password',
+                    'required': True,
+                    'type': 'string',
+                }
             ]
-            payload = request.POST
-            if not check_arguments(exp_args, payload):
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
                 return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
 
             if len(list(TBLUser.objects.filter(email=payload['email']))) > 0:
                 return Response(RES_ERR_USER_EXIST, status=409)
@@ -38,6 +51,7 @@ class Signup(viewsets.ViewSet):
             user.username = payload['email']
             user.email = payload['email']
             user.set_password(payload['password'])
+            user.s_password = encode_password(payload['password'])
             user.save()
 
             ret = create_team(user.id)

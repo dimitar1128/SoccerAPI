@@ -9,7 +9,7 @@ from coolname import *
 from database.soccer.models import *
 
 
-def create_team(owner_id):
+def create_team(owner_id, name=None, country=None, extra_value=None):
     """Create a team
 
     Create 3 goalkeepers, 6 defenders, 6 midfielders, 5 attackers
@@ -20,8 +20,16 @@ def create_team(owner_id):
     Args:
         owner_id
             Id of user who would be the owner of the team
+            This value can be none for no owner
+        name
+            (optional) if not passed, it will generate auto name
+        country
+            (optional) if not passed, it will generate auto country
+        extra_value
+            (optional) if not passed, it will set default value
     Returns:
-        True/False depend on the success of process
+        Team id when success
+        None when fail
     """
     try:
         # pick one random country for the team
@@ -29,8 +37,10 @@ def create_team(owner_id):
 
         team = TBLTeam()
         team.owner_id = owner_id
-        team.name = generate_slug(2)
-        team.country = countries[country_idx]['name']
+        team.name = generate_slug(2) if not name else name
+        team.country = countries[country_idx]['name'] if not country else country
+        if extra_value:
+            team.extra_value = extra_value
         team.save()
 
         # generate team members and register
@@ -42,18 +52,18 @@ def create_team(owner_id):
         }
         for type, count in member_counts.items():
             for i in range(count):
-                ret = create_member(type, team)
-                if not ret:
-                    return False
+                member_id = create_member(type, team)
+                if not member_id:
+                    return None
 
-        return True
+        return team.id
 
     except Exception as e:
         logging.error(str(e))
-        return False
+        return None
 
 
-def create_member(type, team_obj):
+def create_member(type=None, team_obj=None, first_name=None, last_name=None, country=None, age=None, value=None):
     """Create a member and register to team
 
     Generate human readable first name, last name for the player.
@@ -71,38 +81,51 @@ def create_member(type, team_obj):
             Team object which is the owner of the player
             (Pass team_obj instead of team_id to reduce accessing db time as
             this is a function to be called 20 times at once)
+        first_name
+        last_name
+        country
+        age
+        value
+
+        **Note: all of these arguments are optional, if it is not passed, it will generate automatic values except team_id.
+        If team_id is not passed, it will put None value which means it is not included in any teams.
     Returns:
-        True/False depend on the success of process
+        Member id when success
+        None when fail
+
     """
     try:
         # pick one random country for the team
         country_idx = random.randint(0, len(countries))
 
         member = TBLMember()
-        member.type = type
-        member.first_name = names.get_first_name()
-        member.last_name = names.get_last_name()
-        member.country = countries[country_idx]['name']
-        member.age = random.randint(18, 40)
-        member.team_id = team_obj.id
+        member.type = type if type != None else random.randint(0, 3)
+        member.first_name = names.get_first_name() if not first_name else first_name
+        member.last_name = names.get_last_name() if not last_name else last_name
+        member.country = countries[country_idx]['name'] if not country else country
+        member.age = random.randint(18, 40) if not age else age
+        member.team_id = team_obj.id if team_obj else None
+        if value:
+            member.value = value
         member.save()
 
-        team_obj.members.add(member)
-        team_obj.save()
+        if team_obj:
+            team_obj.members.add(member)
+            team_obj.save()
 
-        return True
+        return member.id
 
     except Exception as e:
         logging.error(str(e))
-        return False
+        return None
 
 
-def get_team_by_id(id):
-    """Get team data by id
+def get_team_from_obj(team):
+    """Get team data from its object
 
     Args:
-        id
-            Id of the team
+        team
+            team object
     Returns:
         - when success
             Dictionary of team data including its members
@@ -110,9 +133,9 @@ def get_team_by_id(id):
             None
     """
     try:
-        team = TBLTeam.objects.get(id=id)
         team_dict = {
             'id': team.id,
+            'owner_id': team.owner_id,
             'name': team.name,
             'country': team.country,
             'extra_value': team.extra_value,

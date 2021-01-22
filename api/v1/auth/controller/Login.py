@@ -9,7 +9,7 @@ class Login(viewsets.ViewSet):
         Check user account, login user and generate a token that should be used for further api requests
 
         Url
-            /auth/login/
+            /login/
         Method
             POST
         Payload
@@ -22,17 +22,30 @@ class Login(viewsets.ViewSet):
             - when fail
                 Dictionary with code and message. Possible values are as following.
                     - RES_ERR_MISSING_FIELD         (HttpStatusCode = 400)
+                    - RES_ERR_INVALID_FILED         (HttpStatusCode = 400)
                     - RES_ERR_INVALID_CREDENTIAL    (HttpStatusCode = 400)
                     - RES_ERR_INTERNAL_SERVER       (HttpStatusCode = 500)
         """
         try:
+            # payload check
             payload = self.request.POST
             exp_args = [
-                'email',
-                'password'
+                {
+                    'field': 'email',
+                    'required': True,
+                    'type': 'string',
+                },
+                {
+                    'field': 'password',
+                    'required': True,
+                    'type': 'string',
+                }
             ]
-            if not check_arguments(exp_args, payload):
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
                 return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
 
             user = authenticate(
                 username=payload['email'],

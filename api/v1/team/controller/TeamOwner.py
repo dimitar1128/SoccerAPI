@@ -8,7 +8,7 @@ class TeamOwner(viewsets.ViewSet):
         """Get owner team information
 
         Url
-            /team/my_team/
+            /my_team/
         Method
             GET
         Payload
@@ -31,7 +31,7 @@ class TeamOwner(viewsets.ViewSet):
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
             team_obj = TBLTeam.objects.get(owner_id = user.id)
-            team = get_team_by_id(team_obj.id)
+            team = get_team_from_obj(team_obj)
             if not team:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
@@ -51,7 +51,7 @@ class TeamOwner(viewsets.ViewSet):
                 member country.
 
         Url
-            /team/my_team/
+            /my_team/
         Method
             PUT
         Payload
@@ -76,10 +76,50 @@ class TeamOwner(viewsets.ViewSet):
                 - RES_ERR_INVALID_TOKEN         (HttpStatusCode = 401)
                 - RES_ERR_INVALID_PERMISSION    (HttpStatusCode = 401)
                 - RES_ERR_MISSING_FIELD         (HttpStatusCode = 400)
+                - RES_ERR_INVALID_FILED         (HttpStatusCode = 400)
                 - RES_ERR_INTERNAL_SERVER       (HttpStatusCode = 500)
         """
         try:
+            # payload check
             payload = request.POST
+            exp_args = [
+                {
+                    'field': 'team_name',
+                    'required': False,
+                    'type': 'string'
+                },
+                {
+                    'field': 'team_country',
+                    'required': False,
+                    'type': 'string'
+                },
+                {
+                    'field': 'member_id',
+                    'required': False,
+                    'type': 'integer'
+                },
+                {
+                    'field': 'member_first_name',
+                    'required': False,
+                    'type': 'string'
+                },
+                {
+                    'field': 'member_last_name',
+                    'required': False,
+                    'type': 'string'
+                },
+                {
+                    'field': 'member_country',
+                    'required': False,
+                    'type': 'string'
+                },
+            ]
+            ret = check_payloads(exp_args, payload)
+            if ret == -1:
+                return Response(RES_ERR_MISSING_FIELD, status=400)
+            elif ret == -2:
+                return Response(RES_ERR_INVALID_FILED, status=400)
+
 
             user = get_user_with_token(
                 payload.get('token')

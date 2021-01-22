@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class TBLUser(AbstractUser):
-
+    s_password = models.TextField(default='')
     class Meta:
         db_table = 'tbl_user'
 
@@ -33,14 +33,14 @@ class TBLMember(models.Model):
         (3, 'Attacker'),
     ])
     value = models.FloatField(default=1000000)
-    team_id = models.IntegerField()
+    team_id = models.IntegerField(null=True)
 
     class Meta:
         db_table = 'tbl_member'
 
 
 class TBLTeam(models.Model):
-    owner = models.ForeignKey(TBLUser, on_delete=models.CASCADE)
+    owner = models.ForeignKey(TBLUser, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=100)
     country = models.CharField(max_length=50)
     extra_value = models.FloatField(default=5000000)
