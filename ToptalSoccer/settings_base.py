@@ -34,6 +34,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rbasis',
     'database.soccer',
+    'api.s_auth',
+    'api.market',
+    'api.user',
+    'api.team',
+    'api.member',
 ]
 
 MIDDLEWARE = [

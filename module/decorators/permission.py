@@ -11,7 +11,7 @@ def token_required(func):
     """
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        token = args[1].POST.get('token')
+        token = args[1].POST.get('token') or args[1].query_params.get('token')
         # if token is not passed
         if not token:
             return Response(RES_ERR_TOKEN_REQUIRED, status=401)
@@ -38,7 +38,7 @@ def administrator_func(func):
     """
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        token = args[1].POST.get('token')
+        token = args[1].POST.get('token') or args[1].query_params.get('token')
         # if token is not passed
         if not token:
             return Response(RES_ERR_TOKEN_REQUIRED, status=401)

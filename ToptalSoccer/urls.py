@@ -17,11 +17,11 @@ from django.urls import path
 from django.conf.urls import include
 from rbasis.urlrouter import router
 
-from api.v1.auth import urls as AuthApi
-from api.v1.user import urls as UserApi
-from api.v1.team import urls as TeamApi
-from api.v1.market import urls as MarketApi
-from api.v1.member import urls as MemberApi
+from api.s_auth import urls as AuthApi
+from api.user import urls as UserApi
+from api.team import urls as TeamApi
+from api.market import urls as MarketApi
+from api.member import urls as MemberApi
 
 AuthApi.RegPath()
 TeamApi.RegPath()

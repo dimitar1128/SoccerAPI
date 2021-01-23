@@ -249,6 +249,11 @@ class User(viewsets.ViewSet):
             for member in members:
                 member.delete()
 
+            # delete all user's tokens
+            tokens = list(TBLToken.objects.filter(user_id=user.id))
+            for token in tokens:
+                token.delete()
+
             # delete user
             user.delete()
 

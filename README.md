@@ -1,5 +1,6 @@
 # Toptal Soccer
 Last updated: 2021-01-23
+
 ## 1. Description
 This is a api server for football/soccer fans to create fantasy teams and manage their teams including authentication,
 visit their teams, set players on the transfer list, buy new players from the transfer list etc.
@@ -1211,6 +1212,9 @@ Install `pip3` with the following command. <br>
 - Migrate database.
 `python3 manage.py migrate` <br>
 This command should generate necessary tables automatically in the database `soccer` that you made.
+- Create administrator.
+`python3 manage.py createsuperuser`
+Then enter `email` and `username` (`username` should be the same with `email`), and its password.
 - Run the server. <br>
 `python3 manage.py runserver 127.0.0.1:8000` <br>
 This runs the server on port 8000. You can change the port if you want. <br>
@@ -1285,6 +1289,9 @@ Open /etc/mysql/mysql.conf.d/mysqld.cnf  and update bind-address to 0.0.0.0
     ```
 - Migrate database
 `python3 manage.py migrate`
+- Create administrator.
+`python3 manage.py createsuperuser`
+Then enter `email` and `username` (`username` should be the same with `email`), and its password.
 
 #### 4.2.5 Configure appache ###
 - Open apache configuration. <br>
@@ -1318,8 +1325,22 @@ WSGIScriptAlias / /mnt/ToptalSoccer/ToptalSoccer/wsgi.py
 <h5>Make sure to open 80 and 3306 ports to outside in the cloud provider.</h5>
 
 ### 4.3 Test
+Test is implemented by using DRF unit test module.
 #### 4.3.1 Unit test
+`python3 manage.py test api.s_auth.tests.AuthenticateAPITestCase.test_SignupLogin` <br>
+`python3 manage.py test api.team.tests.MyTeamApiTestCase.testGetAndUpdateMyteam` <br>
+`python3 manage.py test api.team.tests.MyTeamApiTestCase.testGetAndUpdateMyteam` <br>
+`python3 manage.py test api.market.tests.MarketApiTestCase.testSetPlayerOnMarketAndList` <br>
+`python3 manage.py test api.market.tests.MarketApiTestCase.testBuyMemberOnMarket` <br>
+
+`python3 manage.py test api.user.tests.UserTestCase.testUserCRUD` <br>
+`python3 manage.py test api.team.tests.TeamTestCase.testTeamCRUD` <br>
+`python3 manage.py test api.member.tests.MemberTestCase.test_MemberCRUD` <br>
+`python3 manage.py test api.member.tests.MemberTestCase.testNewMemberToTeam` <br>
+`python3 manage.py test api.member.tests.MemberTestCase.testNewMemberToMarket` <br>
+
 #### 4.3.2 E2E test
+`python3 manage.py test api.e2e.tests.E2ETest.test_e2e`
 
 ## 5. Result codes
 - RES_OK_USER_CREATED
@@ -1418,6 +1439,12 @@ WSGIScriptAlias / /mnt/ToptalSoccer/ToptalSoccer/wsgi.py
     * **message:** Server error during team creation
     
 ## 6. Others
-
+- The api server is deployed in development mode on http://100.27.0.226:7777/ <br>
+- All test can be done with postman.
+- In the project root directory, there is postman_collection.json file which is for testing the api.
+- Test administrator account is `admin@soccer.com` and password is `dimitarsoccer1128`.
+- To test administrator role apis, please call `login` api with the above credentials.
+It will give you `token` which should be used to call any other administrator apis.
+- All the `tokens` in the postman collection should not work so please change it with the one you get after you call the `login` api.
 
 

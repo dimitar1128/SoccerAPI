@@ -1,0 +1,817 @@
+{
+	"info": {
+		"_postman_id": "0e187daf-41c3-46f9-8f65-c6389944fcf2",
+		"name": "Toptal Soccer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Administrator",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "user3@soccer.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/user/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List user",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/user/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "user3@soccer.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/user/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "user2@soccer.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/user/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Team",
+					"item": [
+						{
+							"name": "Create team",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Inter Millano",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/team/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"team",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List team",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/team/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"team",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update team",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "14",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "AC Millano",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/team/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"team",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete team",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "11",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/team/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"team",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Member",
+					"item": [
+						{
+							"name": "Create member",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "Luca",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Modric",
+											"type": "text"
+										},
+										{
+											"key": "team_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "market_price",
+											"value": "10000",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/member/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"member",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List member",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/member/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"member",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update member",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "209",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "Neymar",
+											"type": "text"
+										},
+										{
+											"key": "value",
+											"value": "1000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/member/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"member",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete member",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "dAlSuE7XbjMemeb93DVzTX7Ac0vREEzkGpoSXsCv7vw6EVxT9cWdYc5KpkiKnFvg8z5u07",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "209",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://100.27.0.226:7777/member/",
+									"protocol": "http",
+									"host": [
+										"100",
+										"27",
+										"0",
+										"226"
+									],
+									"port": "7777",
+									"path": [
+										"member",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user1@soccer.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/signup/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user1@soccer.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/login/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "My team",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "FLKtg7Ulz3Jk4NO4CJWfSEEvOUXELNFNbcCJ6IiHKLEHG6eUA1EdPm5L46OC4dFbOikgAR",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/my_team/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"my_team",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update my team",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "FLKtg7Ulz3Jk4NO4CJWfSEEvOUXELNFNbcCJ6IiHKLEHG6eUA1EdPm5L46OC4dFbOikgAR",
+							"type": "text"
+						},
+						{
+							"key": "team_name",
+							"value": "Barcellona",
+							"type": "text"
+						},
+						{
+							"key": "team_country",
+							"value": "Spain",
+							"type": "text"
+						},
+						{
+							"key": "member_id",
+							"value": "209",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "member_first_name",
+							"value": "Rionel",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "member_last_name",
+							"value": "Messi",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "member_country",
+							"value": "Argentina",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/my_team/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"my_team",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List all members on the market",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "FLKtg7Ulz3Jk4NO4CJWfSEEvOUXELNFNbcCJ6IiHKLEHG6eUA1EdPm5L46OC4dFbOikgAR",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/market/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"market",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set a member on the market",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "FLKtg7Ulz3Jk4NO4CJWfSEEvOUXELNFNbcCJ6IiHKLEHG6eUA1EdPm5L46OC4dFbOikgAR",
+							"type": "text"
+						},
+						{
+							"key": "member_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "30000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/market/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"market",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy a member on the market",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "FLKtg7Ulz3Jk4NO4CJWfSEEvOUXELNFNbcCJ6IiHKLEHG6eUA1EdPm5L46OC4dFbOikgAR",
+							"type": "text"
+						},
+						{
+							"key": "member_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://100.27.0.226:7777/market/",
+					"protocol": "http",
+					"host": [
+						"100",
+						"27",
+						"0",
+						"226"
+					],
+					"port": "7777",
+					"path": [
+						"market",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

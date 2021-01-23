@@ -3,6 +3,7 @@
 import random
 import logging
 import names
+import time
 from .constant.countries import *
 from coolname import *
 
@@ -56,6 +57,8 @@ def create_team(owner_id, name=None, country=None, extra_value=None):
                 if not member_id:
                     return None
 
+                time.sleep(0.1)
+
         return team.id
 
     except Exception as e:
@@ -96,7 +99,7 @@ def create_member(type=None, team_obj=None, first_name=None, last_name=None, cou
     """
     try:
         # pick one random country for the team
-        country_idx = random.randint(0, len(countries))
+        country_idx = random.randint(0, len(countries) - 1)
 
         member = TBLMember()
         member.type = type if type != None else random.randint(0, 3)

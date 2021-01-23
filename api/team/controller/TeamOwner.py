@@ -25,7 +25,7 @@ class TeamOwner(viewsets.ViewSet):
         """
         try:
             user = get_user_with_token(
-                request.POST.get('token')
+                request.POST.get('token') or request.query_params.get('token')
             )
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
@@ -124,7 +124,7 @@ class TeamOwner(viewsets.ViewSet):
                 return Response(RES_ERR_INVALID_FILED, status=400)
 
             user = get_user_with_token(
-                payload.get('token')
+                request.POST.get('token') or request.query_params.get('token')
             )
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
