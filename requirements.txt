@@ -2,6 +2,6 @@ django==3.0.2
 djangorestframework==3.10.3
 mysqlclient
 requests==2.22.0
-coolname=1.1.0
-names=0.3.0
-cryptography=3.3.1
+coolname==1.1.0
+names==0.3.0
+cryptography==3.3.1

@@ -1179,12 +1179,19 @@ Pass `market_price` to member create api (3.7.1) for this purpose.
 
 ## 4. Deploy and test
 ### 4.1 Deploy on development environment
-- Download and install python (>3.7). <br>
-https://www.python.org/downloads/ <br>
-Make sure to install `pip` (python package management tool) during installing python.
-- Clone the project from its repository.
-- In the project base folder run below command to install dependencies. <br>
-`pip install -r requirements.txt`
+##### Note: This guide is for Ubuntu (18.04 | 20.04) machines. 
+- Install `Python (>=3.8)` and `pip3` 
+Ubuntu (>=18.04) has `Python` installed already.
+Install `pip3` with the following command. <br>
+`sudo apt update` <br>
+`sudo apt install python3-pip -y` 
+- Install dependencies, mysql-server, mysql-client. <br>
+`sudo apt install build-essential mysql-server -y` <br>
+`sudo apt install libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev -y` <br>
+`sudo apt-get install libmysqlclient-dev -y`
+- Clone the project as `ToptalSoccer`.
+- In the project base folder run below command to install requirements. <br>
+`pip3 install -r requirements.txt`
 - Install Mysql on your host and create a database named `soccer`.
 - Configure database connection information in `ToptalSoccer/settings.py`.
     ```text
@@ -1202,10 +1209,10 @@ Make sure to install `pip` (python package management tool) during installing py
     Mysql uses `root` for default username and there is no password by default.
     So if you didn't change this in MySQL you are not required to update database connection in `settings.py`.
 - Migrate database.
-`python manage.py migrate` <br>
+`python3 manage.py migrate` <br>
 This command should generate necessary tables automatically in the database `soccer` that you made.
 - Run the server. <br>
-`python manage.py runserver 127.0.0.1:8000` <br>
+`python3 manage.py runserver 127.0.0.1:8000` <br>
 This runs the server on port 8000. You can change the port if you want. <br>
 You would see the below log if the server runs successfully.
 ```text
@@ -1216,7 +1223,8 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
 <h5>Note</h5>
-`python` and `pip` commands shouldn't work in linux systems and you should use `python3` and `pip3` instead.
+Use `python` and `pip` on windows machine.
+
 ### 4.2 Deploy on production environment
 #### 4.2.1 Install dependencies ###
 - Prepare Ubuntu (18.04 | 20.04) system.
@@ -1230,7 +1238,7 @@ Quit the server with CTRL-BREAK.
 - Install dependencies, mysql-server, mysql-client. <br>
 `sudo apt install python3-pip build-essential mysql-server -y` <br>
 `sudo apt install libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev -y` <br>
-`apt-get install libmysqlclient-dev -y`
+`sudo apt-get install libmysqlclient-dev -y`
 
 <h5>Note</h5> Python3 is installed on most of Ubuntu vms that are provisioned by cloud provider such as AWS and Vultr.
 Check the python version.
@@ -1252,7 +1260,7 @@ Open /etc/mysql/mysql.conf.d/mysqld.cnf  and update bind-address to 0.0.0.0
 `systemctl restart mysql`
 
 #### 4.2.3 Clone repository and install dependency packages ###
-- Clone the project in `/mnt/` directory.
+- Clone the project as `ToptalSoccer` in `/mnt/` directory.
 - Grant permission to the project folder and install dependencies. <br>
 `cd /mnt/ToptalSoccer` <br>
 `chmod 777 -R ./` <br>
