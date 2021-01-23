@@ -1192,7 +1192,7 @@ Install `pip3` with the following command. <br>
 - Clone the project as `ToptalSoccer`.
 - In the project base folder run below command to install requirements. <br>
 `pip3 install -r requirements.txt`
-- Install Mysql on your host and create a database named `soccer`.
+- Create a database named `soccer`.
 - Configure database connection information in `ToptalSoccer/settings.py`.
     ```text
     DATABASES = {
