@@ -77,7 +77,7 @@ class Member(viewsets.ViewSet):
                     - RES_OK_NEW_MEMBER_REGISTERED_TO_TEAM          (HttpStatusCode = 201)
                 -> else if market_price is passed
                     - RES_OK_NEW_MEMBER_REGISTERED_TO_MARKET        (HttpStatusCode = 201)
-                -> else if team_id is not passed
+                -> else
                     - RES_OK_MEMBER_CREATED                         (HttpStatusCode = 201)
 
                 *** member id will be added in member_id field
@@ -335,6 +335,7 @@ class Member(viewsets.ViewSet):
         except Exception as e:
             logging.error(str(e))
             return Response(RES_ERR_INTERNAL_SERVER, status=500)
+
 
     @administrator_func
     def delete(self, request):

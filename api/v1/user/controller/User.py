@@ -44,8 +44,9 @@ class User(viewsets.ViewSet):
             return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
 
+    @administrator_func
     def create(self, request):
-        """Create an user (This can be used as signup purpose as well)
+        """Create an user
 
         Create an user, and his team.
 
@@ -54,9 +55,9 @@ class User(viewsets.ViewSet):
         Method
             POST
         Payload
-            email
+            email (*)
                 New user's email
-            password
+            password (*)
                 New user's password
 
         Returns:
@@ -96,7 +97,7 @@ class User(viewsets.ViewSet):
 
             # if user is already exist
             if len(TBLUser.objects.filter(email=payload['email'])) > 0:
-                return Response(RES_ERR_USER_EXIST, status=400)
+                return Response(RES_ERR_USER_EXIST, status=409)
 
             # create user
             user = TBLUser()

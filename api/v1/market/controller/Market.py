@@ -104,11 +104,17 @@ class Market(viewsets.ViewSet):
                 if filter_value_lte != None and market.price > filter_value_lte:
                     continue
 
+                if member.team_id == None:
+                    team_name = None
+                else:
+                    team_name = team_dict[member.team_id]['name']
+
                 members.append({
+                    'id': member.id,
                     'first_name': member.first_name,
                     'last_name': member.last_name,
                     'country': member.country,
-                    'team_name': team_dict[member.team_id]['name'],
+                    'team_name': team_name,
                     'price': market.price,
                 })
 
@@ -175,10 +181,14 @@ class Market(viewsets.ViewSet):
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
+            # if the user has no team
+            if len(TBLTeam.objects.filter(owner_id=user.id)) == 0:
+                return Response(RES_ERR_INVALID_PERMISSION, status=401)
+
             team_obj = TBLTeam.objects.get(owner_id=user.id)
 
-            # if the user is not administrator, and the member is not the user's team member
-            if user.is_superuser == 0 and len(team_obj.members.filter(id=member_id)) == 0:
+            # if the member is not the user's team member
+            if len(team_obj.members.filter(id=member_id)) == 0:
                 return Response(RES_ERR_INVALID_PERMISSION, status=401)
 
             # if the user is already on the transfer list
@@ -217,6 +227,7 @@ class Market(viewsets.ViewSet):
                 - when fail
                     - RES_ERR_TOKEN_REQUIRED                (HttpStatusCode = 401)
                     - RES_ERR_INVALID_TOKEN                 (HttpStatusCode = 401)
+                    - RES_ERR_INVALID_PERMISSION            (HttpStatusCode = 401)
                     - RES_ERR_MISSING_FIELD                 (HttpStatusCode = 400)
                     - RES_ERR_INVALID_FILED                 (HttpStatusCode = 400)
                     - RES_ERR_MEMBER_NOT_ON_MARKET          (HttpStatusCode = 400)
@@ -246,6 +257,10 @@ class Market(viewsets.ViewSet):
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
+            # if user has no team
+            if len(TBLTeam.objects.filter(owner_id=user.id)) == 0:
+                return Response(RES_ERR_INVALID_PERMISSION, status=401)
+
             member_id = int(payload.get('member_id'))
 
             # if the member is not on the transfer list
@@ -264,10 +279,11 @@ class Market(viewsets.ViewSet):
 
             # remove member from original team, update the original team's extra value
             member = TBLMember.objects.get(id=member_id)
-            orig_team = TBLTeam.objects.get(id=market.member.team_id)
-            orig_team.members.remove(member)
-            orig_team.extra_value += market.price
-            orig_team.save()
+            if market.member.team_id:
+                orig_team = TBLTeam.objects.get(id=market.member.team_id)
+                orig_team.members.remove(member)
+                orig_team.extra_value += market.price
+                orig_team.save()
 
             # add member to the new team, update team's extra value
             team.members.add(member)

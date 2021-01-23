@@ -16,12 +16,14 @@ class Signup(viewsets.ViewSet):
 
         Returns:
               Dictionary with code and message. Possible values are as following.
-                - RES_OK_USER_CREATED       (HttpStatusCode = 201)
-                - RES_ERR_USER_EXIST        (HttpStatusCode = 409)
-                - RES_ERR_MISSING_FIELD     (HttpStatusCode = 400)
-                - RES_ERR_INVALID_FILED         (HttpStatusCode = 400)
-                - RES_ERR_TEAM_CREATE       (HttpStatusCode = 500)
-                - RES_ERR_INTERNAL_SERVER   (HttpStatusCode = 500)
+                - when success
+                    - RES_OK_USER_CREATED       (HttpStatusCode = 201)
+                - when fail
+                    - RES_ERR_MISSING_FIELD     (HttpStatusCode = 400)
+                    - RES_ERR_INVALID_FILED     (HttpStatusCode = 400)
+                    - RES_ERR_USER_EXIST        (HttpStatusCode = 409)
+                    - RES_ERR_TEAM_CREATE       (HttpStatusCode = 500)
+                    - RES_ERR_INTERNAL_SERVER   (HttpStatusCode = 500)
         """
         try:
             # payload check
@@ -47,6 +49,7 @@ class Signup(viewsets.ViewSet):
             if len(list(TBLUser.objects.filter(email=payload['email']))) > 0:
                 return Response(RES_ERR_USER_EXIST, status=409)
 
+            # user create
             user = TBLUser()
             user.username = payload['email']
             user.email = payload['email']
@@ -54,7 +57,9 @@ class Signup(viewsets.ViewSet):
             user.s_password = encode_password(payload['password'])
             user.save()
 
+            # team create
             ret = create_team(user.id)
+
             # if team create is failed, remove registered user
             if not ret:
                 user.delete()

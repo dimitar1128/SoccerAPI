@@ -30,6 +30,9 @@ class TeamOwner(viewsets.ViewSet):
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
 
+            if len(TBLTeam.objects.filter(owner_id = user.id)) == 0:
+                return Response({}, status=200)
+
             team_obj = TBLTeam.objects.get(owner_id = user.id)
             team = get_team_from_obj(team_obj)
             if not team:
@@ -120,12 +123,14 @@ class TeamOwner(viewsets.ViewSet):
             elif ret == -2:
                 return Response(RES_ERR_INVALID_FILED, status=400)
 
-
             user = get_user_with_token(
                 payload.get('token')
             )
             if not user:
                 return Response(RES_ERR_INTERNAL_SERVER, status=500)
+
+            if len(TBLTeam.objects.filter(owner_id=user.id)) == 0:
+                return Response(RES_ERR_INVALID_PERMISSION, status=401)
 
             team_obj = TBLTeam.objects.get(owner_id=user.id)
             team_name = payload.get('team_name')
@@ -140,7 +145,7 @@ class TeamOwner(viewsets.ViewSet):
             if member_id and (not member_first_name) and (not member_last_name) and (not member_country):
                 return Response(RES_ERR_MISSING_FIELD, status=400)
 
-            if member_id and user.is_superuser == 0 and len(team_obj.members.filter(id=member_id)) == 0:
+            if member_id and len(team_obj.members.filter(id=member_id)) == 0:
                 return Response(RES_ERR_INVALID_PERMISSION, status=401)
 
             if team_name:

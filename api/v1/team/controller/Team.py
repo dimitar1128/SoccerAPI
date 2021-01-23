@@ -266,7 +266,7 @@ class Team(viewsets.ViewSet):
             team = TBLTeam.objects.get(id=team_id)
             team.delete()
 
-            return Response(RES_OK_TEAM_DELETED, status=200)
+            return Response(RES_OK_TEAM_DELETED, status=204)
 
         except Exception as e:
             logging.error(str(e))

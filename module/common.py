@@ -2,6 +2,7 @@
 """
 import random
 import string
+from cryptography.fernet import Fernet
 
 def check_payloads(exp_args, payload):
     """Check payload if they are all in right format
@@ -67,6 +68,16 @@ def check_arguments(exp_args, payload):
     return True
 
 
+key = b'GZWKEhHGNopxRdOHS4H4IyKhLQ8lwnyU7vRLrM3sebY='
+def encrypt(message: bytes, key: bytes) -> bytes:
+    """Fernet encrypt"""
+    return Fernet(key).encrypt(message).decode()
+
+def decrypt(token: bytes, key: bytes) -> bytes:
+    """Fernet decrypt"""
+    return Fernet(key).decrypt(token).decode()
+
+
 def generate_token(length=70):
     """Generate random token with passed length
 
@@ -80,9 +91,12 @@ def generate_token(length=70):
 
 
 def encode_password(password):
-    return password
+    """encode password"""
+    return encrypt(password.encode(), key)
 
 def decode_password(password):
-    return password
+    """decode password"""
+    return decrypt(password.encode(), key)
+
 
 

@@ -18,7 +18,7 @@ class Login(viewsets.ViewSet):
 
         Returns:
             - when success
-                Dictionary with token and expires_at time. (HttpStatusCode = 200)
+                Dictionary with `token` and `expires_at` fields. (HttpStatusCode = 200)
             - when fail
                 Dictionary with code and message. Possible values are as following.
                     - RES_ERR_MISSING_FIELD         (HttpStatusCode = 400)
@@ -70,7 +70,7 @@ class Login(viewsets.ViewSet):
             return Response({
                 'token': token,
                 'expires_at': expires_at.strftime('%Y-%m-%d %H:%M:%S GMT+0')
-            }, 200)
+            }, status=200)
 
         except Exception as e:
             logging.error(str(e))
