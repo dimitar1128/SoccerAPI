@@ -39,19 +39,19 @@ RES_OK_NEW_MEMBER_REGISTERED_TO_TEAM = {
     'message': 'Member has been created and registered to the team'
 }
 RES_OK_NEW_MEMBER_REGISTERED_TO_MARKET = {
-    'code': 1010,
+    'code': 1011,
     'message': 'Member has been created and registered and added to the market'
 }
 RES_OK_NEW_MEMBER_REGISTERED_TO_TEAM_AND_MARKET = {
-    'code': 1010,
+    'code': 1012,
     'message': 'Member has been created and registered to the team, and added to the market'
 }
 RES_OK_SET_ON_TRANSFER_LIST = {
-    'code': 1003,
+    'code': 1013,
     'message': 'Player has been set on the transfer list'
 }
 RES_OK_BUY_PLAYER = {
-    'code': 1004,
+    'code': 1014,
     'message': 'You have bought the player'
 }
 
@@ -82,26 +82,25 @@ RES_ERR_MEMBER_NOT_EXIST = {
     'message': 'The member does not exist'
 }
 RES_ERR_INVALID_CREDENTIAL = {
-    'code': 8102,
+    'code': 8105,
     'message': 'Email or password is not correct'
 }
 RES_ERR_ALREADY_ON_MARKET = {
-    'code': 8103,
+    'code': 8106,
     'message': 'The member is already on the transfer list'
 }
 RES_ERR_MEMBER_NOT_ON_MARKET = {
-    'code': 8105,
+    'code': 8107,
     'message': 'The member is not on the transfer list'
 }
 RES_ERR_NOT_ALLOW_TO_BUY_OWN_PLAYER = {
-    'code': 8106,
+    'code': 8108,
     'message': 'You are not allowed to buy your own player'
 }
 RES_ERR_NOT_ENOUGH_MONEY_TO_BUY = {
-    'code': 8107,
+    'code': 8109,
     'message': 'Your team does not have enough money to buy the player'
 }
-
 
 
 RES_ERR_TOKEN_REQUIRED = {
@@ -110,14 +109,12 @@ RES_ERR_TOKEN_REQUIRED = {
 }
 RES_ERR_INVALID_TOKEN = {
     'code': 8902,
-    'message': 'Token is invalid. Please try to login again to get a new valid token.'
+    'message': 'Token is invalid. Please try to login again to get a new valid token'
 }
 RES_ERR_INVALID_PERMISSION = {
     'code': 8903,
     'message': 'You are not allowed to do this action'
 }
-
-
 
 
 RES_ERR_INTERNAL_SERVER = {

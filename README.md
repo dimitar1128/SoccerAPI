@@ -1179,13 +1179,236 @@ Pass `market_price` to member create api (3.7.1) for this purpose.
 
 ## 4. Deploy and test
 ### 4.1 Deploy on development environment
+- Download and install python (>3.7). <br>
+https://www.python.org/downloads/ <br>
+Make sure to install `pip` (python package management tool) during installing python.
+- Clone the project from its repository.
+- In the project base folder run below command to install dependencies. <br>
+`pip install -r requirements.txt`
+- Install Mysql on your host and create a database named `soccer`.
+- Configure database connection information in `ToptalSoccer/settings.py`.
+    ```text
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'soccer',
+            'HOST': 'localhost',
+            'USER': 'root',
+            'PASSWORD': '',
+            'PORT': '3306',
+        }
+    }
+    ```
+    Mysql uses `root` for default username and there is no password by default.
+    So if you didn't change this in MySQL you are not required to update database connection in `settings.py`.
+- Migrate database.
+`python manage.py migrate` <br>
+This command should generate necessary tables automatically in the database `soccer` that you made.
+- Run the server. <br>
+`python manage.py runserver 127.0.0.1:8000` <br>
+This runs the server on port 8000. You can change the port if you want. <br>
+You would see the below log if the server runs successfully.
+```text
+System check identified 1 issue (0 silenced).
+January 23, 2021 - 18:55:55
+Django version 3.0.2, using settings 'ToptalSoccer.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+```
+<h5>Note</h5>
+`python` and `pip` commands shouldn't work in linux systems and you should use `python3` and `pip3` instead.
 ### 4.2 Deploy on production environment
+#### 4.2.1 Install dependencies ###
+- Prepare Ubuntu (18.04 | 20.04) system.
+- Install apache & wsgi module for apache <br>
+`sudo apt-get update -y` <br>
+`sudo apt install apache2 libapache2-mod-wsgi-py3 -y`
+- Enable module alias, ssl, rewrite <br>
+`sudo a2enmod alias ssl rewrite`
+- Restart apache <br>
+`sudo service apache2 restart`
+- Install dependencies, mysql-server, mysql-client. <br>
+`sudo apt install python3-pip build-essential mysql-server -y` <br>
+`sudo apt install libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev -y` <br>
+`apt-get install libmysqlclient-dev -y`
+
+<h5>Note</h5> Python3 is installed on most of Ubuntu vms that are provisioned by cloud provider such as AWS and Vultr.
+Check the python version.
+`python3 --version`
+
+#### 4.2.2 Configure mysql ###
+- Enter to mysql cli. <br>
+`mysql`
+- Create user and grant permission. <br>
+`CREATE USER 'admin'@'%' IDENTIFIED BY 'password';` <br>
+`GRANT ALL PRIVILEGES ON * . * TO 'admin'@'%';` <br>
+`ALTER USER 'admin'@'%' IDENTIFIED WITH mysql_native_password BY 'password';`
+- Create database named `soccer` and exit.<br>
+`CREATE DATABASE soccer;` <br>
+`exit;`
+- Update bind address of mysql server to 0.0.0.0 <br>
+Open /etc/mysql/mysql.conf.d/mysqld.cnf  and update bind-address to 0.0.0.0
+- Restart mysql service. <br>
+`systemctl restart mysql`
+
+#### 4.2.3 Clone repository and install dependency packages ###
+- Clone the project in `/mnt/` directory.
+- Grant permission to the project folder and install dependencies. <br>
+`cd /mnt/ToptalSoccer` <br>
+`chmod 777 -R ./` <br>
+`pip3 install -r requirements.txt` <br>
+
+#### 4.2.4 Update settings and migrate database ###
+- Replace `settings.py` with `settings_prod.py`. <br>
+`cd /mnt/ToptalSoccer` <br>
+`mv ToptalSoccer/settings_prod.py ToptalSoccer/settings.py`
+- Update database connection information in `ToptalSoccer/settings.py`
+  ```text
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'soccer',
+            'HOST': '<host ip>',
+            'USER': 'admin',
+            'PASSWORD': 'password',
+            'PORT': '3306',
+        }
+    }
+    ```
+- Migrate database
+`python3 manage.py migrate`
+
+#### 4.2.5 Configure appache ###
+- Open apache configuration. <br>
+`vim /etc/apache2/sites-available/000-default.conf`
+- Add the following to the file of <VirtualHost> tag.
+```text
+ServerName <host ip>
+ServerAlias <host ip>
+
+DocumentRoot /mnt/ToptalSoccer
+
+<Directory "/mnt/ToptalSoccer">
+	Require all granted
+</Directory>
+
+<Directory /mnt/ToptalSoccer/ToptalSoccer>
+	<Files wsgi.py>
+		Require all granted
+	</Files>
+</Directory>
+
+WSGIDaemonProcess ToptalSoccer python-path=/mnt/ToptalSoccer/:/usr/local/lib/python3.8/dist-packages
+WSGIProcessGroup ToptalSoccer
+WSGIApplicationGroup %{GLOBAL}
+WSGIScriptAlias / /mnt/ToptalSoccer/ToptalSoccer/wsgi.py
+``` 
+- Check configuration with command and then restart apache service. <br>
+`sudo apachectl configtest` <br>
+`sudo systemctl restart apache2`
+
+<h5>Make sure to open 80 and 3306 ports to outside in the cloud provider.</h5>
+
 ### 4.3 Test
 #### 4.3.1 Unit test
 #### 4.3.2 E2E test
 
 ## 5. Result codes
-
+- RES_OK_USER_CREATED
+    * **code:** 1001
+    * **message:** User has been created
+- RES_OK_USER_UPDATED
+    * **code:** 1002
+    * **message:** User has been updated
+- RES_OK_USER_DELETED
+    * **code:** 1003
+    * **message:** User has been deleted
+- RES_OK_TEAM_CREATED
+    * **code:** 1004
+    * **message:** Team has been created
+- RES_OK_TEAM_UPDATED
+    * **code:** 1005 
+    * **message:** Team has been updated 
+- RES_OK_TEAM_DELETED
+    * **code:** 1006
+    * **message:** Team has been deleted
+- RES_OK_MEMBER_CREATED
+    * **code:** 1007
+    * **message:** Member has been created
+- RES_OK_MEMBER_UPDATED
+    * **code:** 1008
+    * **message:** Member has been updated
+- RES_OK_MEMBER_DELETED
+    * **code:** 1009
+    * **message:** Member has been deleted
+- RES_OK_NEW_MEMBER_REGISTERED_TO_TEAM
+    * **code:** 1010
+    * **message:** Member has been created and registered to the team
+- RES_OK_NEW_MEMBER_REGISTERED_TO_MARKET
+    * **code:** 1011
+    * **message:** Member has been created and registered and added to the market
+- RES_OK_NEW_MEMBER_REGISTERED_TO_TEAM_AND_MARKET
+    * **code:** 1012
+    * **message:** Member has been created and registered to the team, and added to the market
+- RES_OK_SET_ON_TRANSFER_LIST
+    * **code:** 1013
+    * **message:** Player has been set on the transfer list
+- RES_OK_BUY_PLAYER
+    * **code:** 1014
+    * **message:** You have bought the player
+<br><br/>
+- RES_ERR_MISSING_FIELD
+    * **code:** 8001
+    * **message:** One or more fields are missing in the request
+- RES_ERR_INVALID_FILED
+    * **code:** 8002
+    * **message:** One or more fields in the request are invalid
+<br><br/>
+- RES_ERR_USER_EXIST
+    * **code:** 8101
+    * **message:** The email is already registered
+- RES_ERR_USER_NOT_EXIST
+    * **code:** 8102
+    * **message:** The email is not registered yet
+- RES_ERR_TEAM_NOT_EXIST
+    * **code:** 8103
+    * **message:** The team does not exist
+- RES_ERR_MEMBER_NOT_EXIST
+    * **code:** 8104
+    * **message:** The member does not exist
+- RES_ERR_INVALID_CREDENTIAL
+    * **code:** 8105
+    * **message:** Email or password is not correct
+- RES_ERR_ALREADY_ON_MARKET
+    * **code:** 8106
+    * **message:** The member is already on the transfer list
+- RES_ERR_MEMBER_NOT_ON_MARKET
+    * **code:** 8107
+    * **message:** The member is not on the transfer list
+- RES_ERR_NOT_ALLOW_TO_BUY_OWN_PLAYER
+    * **code:** 8108
+    * **message:** You are not allowed to buy your own player
+- RES_ERR_NOT_ENOUGH_MONEY_TO_BUY
+    * **code:** 8109
+    * **message:** Your team does not have enough money to buy the player
+<br><br/>
+- RES_ERR_TOKEN_REQUIRED
+    * **code:** 8901
+    * **message:** Token is required to call api
+- RES_ERR_INVALID_TOKEN
+    * **code:** 8902
+    * **message:** Token is invalid. Please try to login again to get a new valid token
+- RES_ERR_INVALID_PERMISSION
+    * **code:** 8903
+    * **message:** You are not allowed to do this action
+<br><br/>
+- RES_ERR_INTERNAL_SERVER
+    * **code:** 9001
+    * **message:** Internal server error
+- RES_ERR_TEAM_CREATE
+    * **code:** 9002
+    * **message:** Server error during team creation
+    
 ## 6. Others
 
 
