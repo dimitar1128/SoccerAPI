@@ -1,11 +1,35 @@
-# Toptal Soccer
+# Soccer API
 Last updated: 2021-01-23
 
 ## 1. Description
-This is a api server for football/soccer fans to create fantasy teams and manage their teams including authentication,
-visit their teams, set players on the transfer list, buy new players from the transfer list etc.
-This supports an administrator role to manage all assets on the system.
-Api endpoints and their details can be found in part 3.
+** Write a soccer online manager game API **
+
+You need to write an API for a simple application where football/soccer fans will create fantasy teams and will be able to sell or buy players.
+User must be able to create an account and log in using the API.
+Each user can have only one team (user is identified by an email)
+When the user is signed up, they should get a team of 20 players (the system should generate players):
+  * 3 goalkeepers
+  * 6 defenders
+  * 6 midfielders
+  * 5 attackers
+Each player has an initial value of $1.000.000.
+Each team has an additional $5.000.000 to buy other players.
+When logged in, a user can see their team and player information
+Team has the following information:
+  * Team name and a country (can be edited)
+  * Team value (sum of player values)
+Player has the following information
+  * First name, last name, country (can be edited by a team owner)
+  * Age (random number from 18 to 40) and market value
+A team owner can set the player on a transfer list
+When a user places a player on a transfer list, they must set the asking price/value for this player. This value should be listed on a market list. When another user/team buys this player, they must be bought for this price.
+Each user should be able to see all players on a transfer list and filter them by country, team name, player name, and a value.
+With each transfer, team budgets are updated.
+When a player is transferred to another team, their value should be increased between 10 and 100 percent. Implement a random factor for this purpose.
+
+Implement administrator role.
+** An administrator who can CRUD users, teams, players, add new players to the market or in the team and change all player/team information, including player’s value
+REST API. Make it possible to perform all user and admin actions via the API, including authentication.
 
 ##2. Technical stacks
 - Language: Python
@@ -1190,11 +1214,11 @@ Install `pip3` with the following command. <br>
 `sudo apt install build-essential mysql-server -y` <br>
 `sudo apt install libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev -y` <br>
 `sudo apt-get install libmysqlclient-dev -y`
-- Clone the project as `ToptalSoccer`.
+- Clone the project as `Soccer`.
 - In the project base folder run below command to install requirements. <br>
 `pip3 install -r requirements.txt`
 - Create a database named `soccer`.
-- Configure database connection information in `ToptalSoccer/settings.py`.
+- Configure database connection information in `Soccer/settings.py`.
     ```text
     DATABASES = {
         'default': {
@@ -1222,7 +1246,7 @@ You would see the below log if the server runs successfully.
 ```text
 System check identified 1 issue (0 silenced).
 January 23, 2021 - 18:55:55
-Django version 3.0.2, using settings 'ToptalSoccer.settings'
+Django version 3.0.2, using settings 'Soccer.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
@@ -1264,17 +1288,17 @@ Open /etc/mysql/mysql.conf.d/mysqld.cnf  and update bind-address to 0.0.0.0
 `systemctl restart mysql`
 
 #### 4.2.3 Clone repository and install dependency packages ###
-- Clone the project as `ToptalSoccer` in `/mnt/` directory.
+- Clone the project as `Soccer` in `/mnt/` directory.
 - Grant permission to the project folder and install dependencies. <br>
-`cd /mnt/ToptalSoccer` <br>
+`cd /mnt/Soccer` <br>
 `chmod 777 -R ./` <br>
 `pip3 install -r requirements.txt` <br>
 
 #### 4.2.4 Update settings and migrate database ###
 - Replace `settings.py` with `settings_prod.py`. <br>
-`cd /mnt/ToptalSoccer` <br>
-`mv ToptalSoccer/settings_prod.py ToptalSoccer/settings.py`
-- Update database connection information in `ToptalSoccer/settings.py`
+`cd /mnt/Soccer` <br>
+`mv Soccer/settings_prod.py Soccer/settings.py`
+- Update database connection information in `Soccer/settings.py`
   ```text
     DATABASES = {
         'default': {
@@ -1301,22 +1325,22 @@ Then enter `email` and `username` (`username` should be the same with `email`), 
 ServerName <host ip>
 ServerAlias <host ip>
 
-DocumentRoot /mnt/ToptalSoccer
+DocumentRoot /mnt/Soccer
 
-<Directory "/mnt/ToptalSoccer">
+<Directory "/mnt/Soccer">
 	Require all granted
 </Directory>
 
-<Directory /mnt/ToptalSoccer/ToptalSoccer>
+<Directory /mnt/Soccer/Soccer>
 	<Files wsgi.py>
 		Require all granted
 	</Files>
 </Directory>
 
-WSGIDaemonProcess ToptalSoccer python-path=/mnt/ToptalSoccer/:/usr/local/lib/python3.8/dist-packages
-WSGIProcessGroup ToptalSoccer
+WSGIDaemonProcess Soccer python-path=/mnt/Soccer/:/usr/local/lib/python3.8/dist-packages
+WSGIProcessGroup Soccer
 WSGIApplicationGroup %{GLOBAL}
-WSGIScriptAlias / /mnt/ToptalSoccer/ToptalSoccer/wsgi.py
+WSGIScriptAlias / /mnt/Soccer/Soccer/wsgi.py
 ``` 
 - Check configuration with command and then restart apache service. <br>
 `sudo apachectl configtest` <br>
@@ -1439,12 +1463,5 @@ Test is implemented by using DRF unit test module.
     * **message:** Server error during team creation
     
 ## 6. Others
-- The api server is deployed in development mode on http://100.27.0.226:7777/ <br>
 - All test can be done with postman.
 - In the project root directory, there is postman_collection.json file which is for testing the api.
-- Test administrator account is `admin@soccer.com` and password is `dimitarsoccer1128`.
-- To test administrator role apis, please call `login` api with the above credentials.
-It will give you `token` which should be used to call any other administrator apis.
-- All the `tokens` in the postman collection should not work so please change it with the one you get after you call the `login` api.
-
-
